@@ -24,6 +24,7 @@ jobs:
           cd QtTermTCP
           qmake
           make
+          mv QtTermTCP ../
 
       - name: Upload bin
         uses: actions/upload-artifact@v3
