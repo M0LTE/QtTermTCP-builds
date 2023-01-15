@@ -12,7 +12,9 @@ jobs:
           fetch-depth: 0  # used to get the tag of the latest release
 
       - name: Install tooling
-        run: sudo apt install qt5-qmake qtbase5-dev libqt5serialport5-dev
+        run: |
+          sudo apt update
+          sudo apt install -y qt5-qmake qtbase5-dev libqt5serialport5-dev
 
       - name: Clone from John
         run: git clone git://vps1.g8bpq.net/QtTermTCP
