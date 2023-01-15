@@ -18,4 +18,6 @@ jobs:
         run: git clone git://vps1.g8bpq.net/QtTermTCP
 
       - name: make
-        run: make
+        run: |
+          cd QtTermTCP
+          make
