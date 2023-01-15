@@ -21,7 +21,8 @@ jobs:
 
       - name: Build
         run: |
-          cd QtTermTCP
+          mv QtTermTCP src
+          cd src
           qmake
           make
           mv QtTermTCP ../
