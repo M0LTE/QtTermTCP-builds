@@ -1,0 +1,58 @@
+name: Build
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up git repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # used to get the tag of the latest release
+
+      - name: Install tooling
+        run: |
+          sudo apt update
+          sudo apt install -y qt5-qmake qtbase5-dev libqt5serialport5-dev
+
+      - name: Clone from John
+        run: git clone git://vps1.g8bpq.net/QtTermTCP
+
+      - name: Build
+        run: |
+          cd QtTermTCP
+          qmake
+          make
+
+      - name: Upload bin
+        uses: actions/upload-artifact@v3
+        with:
+          name: QtTermTCP
+          path: QtTermTCP
+
+      # Removes the latest release, so that we can create a new one in its place
+      - name: Delete latest release
+        uses: ame-yu/action-delete-latest-release@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      # (optional) Removes the tag associated with the latest release
+      - name: Delete release tag
+        run: |
+          git tag -d release
+          git push origin :release
+        continue-on-error: true # in case there's no existing release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      # Creates the new release with the binary as a release asset.
+      # If the previous Action was skipped, then this keeps the same tag as the
+      # previous release.
+      - name: Create new release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: QtTermTCP
+          name: Latest
+          tag_name: release
+          files: QtTermTCP
