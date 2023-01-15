@@ -11,13 +11,13 @@ jobs:
         with:
           fetch-depth: 0  # used to get the tag of the latest release
 
-#      - name: Install tooling
-#        run: sudo apt install libconfig-dev libssl-dev libminiupnpc-dev libzip-dev libpcap-dev libasound-dev
+      - name: Install tooling
+        run: sudo apt install qt5-qmake qtbase5-dev libqt5serialport5-dev
 
       - name: Clone from John
         run: git clone git://vps1.g8bpq.net/QtTermTCP
 
-      - name: make
+      - name: Build
         run: |
-          cd QtTermTCP
+          qmake
           make
