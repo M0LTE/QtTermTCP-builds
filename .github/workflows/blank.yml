@@ -1,0 +1,21 @@
+name: Build
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up git repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # used to get the tag of the latest release
+
+#      - name: Install tooling
+#        run: sudo apt install libconfig-dev libssl-dev libminiupnpc-dev libzip-dev libpcap-dev libasound-dev
+
+      - name: Clone from John
+        run: git clone git://vps1.g8bpq.net/QtTermTCP
+
+      - name: make
+        run: make
